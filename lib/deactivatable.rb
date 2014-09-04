@@ -120,7 +120,7 @@ module ActiveRecord
         # Execution must be wrapped in the dependency's with_deactivated_objects_scope for activate! to work.
         #
         def execute_on_dependency(dependency_name, method)
-          self.class.reflections[dependency_name].klass.send(:with_exclusive_scope) do
+          self.class.reflections[dependency_name].klass.send(:unscoped) do
             if dependency = self.__send__(dependency_name)
               dependency.respond_to?(:map) ? dependency.map(&method) : dependency.__send__(method)
             end
